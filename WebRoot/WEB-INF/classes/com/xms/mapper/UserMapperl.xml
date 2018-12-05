@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.UserMapper">
+	<!-- sql片段 -->
+	<!-- 用户信息，不为空的信息则写入SQL片段 -->
+	<sql id="user_info">
+		<if test="user!=null">
+			<if test="user.userID!=null">
+				and user_id = #{user.userID}
+			</if>
+			<if test="user.userName!=null">
+				and user_name = #{user.userName}
+			</if>
+			<if test="user.password!=null">
+				and password = #{user.password}
+			</if>
+			<if test="user.userRealName!=null">
+				and user_real_name = #{user.userRealName}
+			</if>
+			<if test="user.sex!=null">
+				and sex = #{sex}
+			</if>
+			<if test="user.userPhone!=null">
+				and user_phone = #{user.userPhone}
+			</if>
+			<if test="user.email!=null">
+				and email = #{user.email}
+			</if>
+			<if test="user.idCardNum!=null">
+				and id_card_num = #{user.idCardNum}
+			</if>
+			<if test="user.rank!=null">
+				and rank = #{user.rank}
+			</if>
+		</if>
+	</sql>
+		
+	<!-- 查找语句 -->
+	<!-- 根据ID查找用户 -->
+	<select id="findUsersByUserID" resultType="user" parameterType="int">
+		SELECT * FROM user WHERE user_id = #{userID}	
+	</select>
+	
+	<!-- 插入语句 -->
+	<!-- 插入用户信息 -->
+	<insert id="addUser" parameterType="user">
+		INSERT INTO user (
+			user_name, password, user_real_name, sex, 
+			user_phone, email, id_card_num, rank
+		)
+		value(
+			#{userName}, #{password}, #{userRealName}, #{sex}, 
+			#{userPhone}, #{email}, #{idCardNum}, #{rank}
+		)
+	</insert>
+	
+	<!-- 更新语句 -->
+	<!-- 更新用户信息，用户名、密码、级别除外 -->
+	<update id="updateUserByID" parameterType="user">
+		UPDATE user SET user_real_name = #{userRealName}, sex = #{sex}, 
+		user_phone = #{userPhone}, email = #{email}, id_card_num = #{idCardNum}
+	</update>
+
+</mapper>
